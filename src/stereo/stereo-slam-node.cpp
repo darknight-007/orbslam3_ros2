@@ -30,6 +30,7 @@ StereoSlamNode::StereoSlamNode(ORB_SLAM3::System* pSLAM, const string &strSettin
         fsSettings["LEFT.R"] >> R_l;
         fsSettings["RIGHT.R"] >> R_r;
 
+
         fsSettings["LEFT.D"] >> D_l;
         fsSettings["RIGHT.D"] >> D_r;
 

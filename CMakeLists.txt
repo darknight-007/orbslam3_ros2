@@ -3,6 +3,9 @@ project(orbslam3)
 
 # You should set the PYTHONPATH to your own python site-packages path
 set(ENV{PYTHONPATH} "/opt/ros/foxy/lib/python3.8/site-packages/")
+set(ENV{ORB_SLAM3_INCLUDE_DIR} "/home/bushman/ORB-SLAM3-STEREO-FIXED/include/")
+set(ENV{ORB_SLAM3_LIBRARY} "/home/bushman/ORB-SLAM3-STEREO-FIXED/lib/")
+set(ENV{ORB_SLAM3_ROOT_DIR} "/home/bushman/ORB-SLAM3-STEREO-FIXED/") 
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules)
 
@@ -18,6 +21,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(visualization_msgs REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(message_filters REQUIRED)
 find_package(Sophus REQUIRED)
@@ -34,11 +38,18 @@ link_directories(
   include
 )
 
+#add_executable(AR
+#  src/AR/ros_mono_ar.cc
+#  src/AR/ViewerAR.cc
+#)
+#ament_target_dependencies(AR rclcpp sensor_msgs cv_bridge ORB_SLAM3 Pangolin)
+
+
 add_executable(mono
   src/monocular/mono.cpp
   src/monocular/monocular-slam-node.cpp
 )
-ament_target_dependencies(mono rclcpp sensor_msgs cv_bridge ORB_SLAM3 Pangolin)
+ament_target_dependencies(mono rclcpp sensor_msgs visualization_msgs cv_bridge ORB_SLAM3 Pangolin)
 
 add_executable(rgbd
   src/rgbd/rgbd.cpp
@@ -50,14 +61,14 @@ add_executable(stereo
   src/stereo/stereo.cpp
   src/stereo/stereo-slam-node.cpp
 )
-ament_target_dependencies(stereo rclcpp sensor_msgs cv_bridge message_filters
+ament_target_dependencies(stereo rclcpp sensor_msgs  cv_bridge message_filters
 ORB_SLAM3 Pangolin)
 
 add_executable(stereo-inertial
   src/stereo-inertial/stereo-inertial.cpp
   src/stereo-inertial/stereo-inertial-node.cpp
 )
-ament_target_dependencies(stereo-inertial rclcpp sensor_msgs cv_bridge ORB_SLAM3 Pangolin)
+ament_target_dependencies(stereo-inertial rclcpp sensor_msgs  cv_bridge ORB_SLAM3 Pangolin)
 
 install(TARGETS mono rgbd stereo stereo-inertial
   DESTINATION lib/${PROJECT_NAME})
